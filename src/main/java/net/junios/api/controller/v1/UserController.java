@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
+import net.junios.api.exception.CUserNotFoundException;
 import net.junios.api.model.User;
 import net.junios.api.model.response.CommonResult;
 import net.junios.api.model.response.ListResult;
@@ -34,8 +35,16 @@ public class UserController {
     @GetMapping(value = "/user/{msrl}")
     public SingleResult<User> findUserById(@ApiParam(value = "회원ID", required = true) @PathVariable long msrl) {
         // 결과데이터가 단일건인경우 getBasicResult를 이용해서 결과를 출력한다.
-        return responseService.getSingleResult(userJpaRepo.findById(msrl).orElse(null));
+        return responseService.getSingleResult(userJpaRepo.findById(msrl).orElseThrow(CUserNotFoundException::new));
     }
+
+//    @ApiOperation(value = "회원 단건 조회", notes = "userId로 회원을 조회한다")
+//    @GetMapping(value = "/user/{userId}")
+//    public SingleResult<User> findUserById(@ApiParam(value = "회원ID", required = true) @PathVariable long userId)throws Exception {
+//        // 결과데이터가 단일건인경우 getSingleResult를 이용해서 결과를 출력한다.
+////        return responseService.getSingleResult(userJpaRepo.findById(userId).orElseThrow(Exception::new));
+//        return responseService.getSingleResult(userJpaRepo.findById(userId).orElseThrow(CUserNotFoundException::new));
+//    }
 
     @ApiOperation(value = "회원 입력", notes = "회원을 입력한다")
     @PostMapping(value = "/user")
