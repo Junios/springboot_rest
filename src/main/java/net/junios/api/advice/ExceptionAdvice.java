@@ -1,6 +1,7 @@
 package net.junios.api.advice;
 
 import lombok.RequiredArgsConstructor;
+import net.junios.api.exception.CEmailSigninFailedException;
 import net.junios.api.exception.CUserNotFoundException;
 import net.junios.api.model.response.CommonResult;
 import net.junios.api.service.ResponseService;
@@ -42,5 +43,12 @@ public class ExceptionAdvice {
     // code정보, 추가 argument로 현재 locale에 맞는 메시지를 조회합니다.
     private String getMessage(String code, Object[] args) {
         return messageSource.getMessage(code, args, LocaleContextHolder.getLocale());
+    }
+
+
+    @ExceptionHandler(CEmailSigninFailedException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    protected CommonResult emailSigninFailed(HttpServletRequest request, CEmailSigninFailedException e) {
+        return responseService.getFailResult(Integer.valueOf(getMessage("emailSigninFailed.code")), getMessage("emailSigninFailed.msg"));
     }
 }

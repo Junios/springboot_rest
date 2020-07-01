@@ -31,10 +31,19 @@ dependencies {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
 
+    //api 문서 및 테스트 화면 만들기
     implementation 'io.springfox:springfox-swagger2:2.6.1'
     implementation 'io.springfox:springfox-swagger-ui:2.6.1'
 
+    //yaml을 이용한 다국어 지원
     implementation 'net.rakugakibox.util:yaml-resource-bundle:1.1'
+
+
+    //security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'io.jsonwebtoken:jjwt:0.9.1'
+
+    testImplementation 'org.springframework.security:spring-security-test'
 }
 
 test {
